@@ -14,7 +14,9 @@ class FetchDataService < ApplicationService
   private
 
   def process
+    puts "process  is_valid b ---- #{is_valid}"
     validate_message_received
+    puts "process  is_valid a ---- #{is_valid}"
     return invalid_response if !is_valid
     data = fetch_data_from_backend
     generate_response_msg(data)
@@ -57,7 +59,9 @@ class FetchDataService < ApplicationService
     puts "body ---- #{body}"
     puts "body body.match(/(cases|deaths)/) ---- #{body.match(/(cases|deaths)/)}"
     if body.match(/(cases|deaths)/)
+      puts "validate_message_received  is_valid b ---- #{is_valid}"
       is_valid = true
+      puts "validate_message_received  is_valid a ---- #{is_valid}"
     end
   end
 
