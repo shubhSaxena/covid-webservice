@@ -14,9 +14,7 @@ class FetchDataService < ApplicationService
   private
 
   def process
-    puts "process  is_valid b ---- #{is_valid}"
     validate_message_received
-    puts "process  is_valid a ---- #{is_valid}"
     return invalid_response if !is_valid
     data = fetch_data_from_backend
     generate_response_msg(data)
@@ -24,9 +22,13 @@ class FetchDataService < ApplicationService
   end
 
   def fetch_data_from_backend
+    puts "*"*80
+    puts " ---fetch_data_from_backend --  "
     if body.include?("cases")
+      puts " ---cases --  backend_payload - #{backend_payload}"
       BackendClient.new.fetch_active_cases_data(backend_payload)
     elsif body.include?("deaths")
+      puts " ---deaths --  backend_payload - #{backend_payload}"
       BackendClient.new.fetch_total_death_data(backend_payload)
     end
   end
@@ -55,13 +57,8 @@ class FetchDataService < ApplicationService
   end
 
   def validate_message_received
-    puts "*"*80
-    puts "body ---- #{body}"
-    puts "body body.match(/(cases|deaths)/) ---- #{body.match(/(cases|deaths)/)}"
     if body.match(/(cases|deaths)/)
-      puts "validate_message_received  is_valid b ---- #{is_valid}"
       @is_valid = true
-      puts "validate_message_received  is_valid a ---- #{is_valid}"
     end
   end
 
