@@ -53,8 +53,10 @@ class FetchDataService < ApplicationService
   end
 
   def validate_message_received
-    text = body
-    if text.match(/(cases|deaths)/)
+    puts "*"*80
+    puts "body ---- #{body}"
+    puts "body body.match(/(cases|deaths)/) ---- #{body.match(/(cases|deaths)/)}"
+    if body.match(/(cases|deaths)/)
       is_valid = true
     end
   end
