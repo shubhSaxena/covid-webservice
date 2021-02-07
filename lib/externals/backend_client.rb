@@ -1,6 +1,6 @@
 class BackendClient < RootClient
   def base_url
-    ENV['BACKEND_API'] || 'https://api.covid19api.com'
+    ENV['BACKEND_API'] || 'https://covid-backend-test.herokuapp.com/'
   end
 
   def fetch_active_cases_data(body)

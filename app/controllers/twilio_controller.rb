@@ -3,8 +3,6 @@ class TwilioController < ApplicationController
   def receive_message
     puts "*"*80
     puts params
-    body = params["Body"].downcase
-    
     response = FetchDataService.call(params)
     render xml: response.to_xml
   end

@@ -1,22 +1,32 @@
 class FetchDataService < ApplicationService
-  attr_accessor :params, :response, :body
+  attr_accessor :params, :response, :body, :is_valid
   def initialize(params)
     @params = params
     @response = Twilio::TwiML::MessagingResponse.new
-    @body = params["Body"]
+    @body = params["Body"].downcase
+    @is_valid = false
   end
 
   def call
-    respond_with_message
+    process
   end
 
   private
 
-  def respond_with_message
-    invalid_response
+  def process
+    validate_message_received
+    return invalid_response if !is_valid
+    data = fetch_data_from_backend
+    generate_response_msg(data)
+    response
   end
 
   def fetch_data_from_backend
+    if body.include?("cases")
+      BackendClient.new.fetch_active_cases_data(backend_payload)
+    elsif body.include?("deaths")
+      BackendClient.new.fetch_total_death_data(backend_payload)
+    end
   end
 
   def invalid_response
@@ -30,11 +40,30 @@ class FetchDataService < ApplicationService
     end
   end
 
-  def valid_response
+  def generate_response_msg(data)
+    msg = body.split()[1]
+    if body.include?("cases")
+      msg = "#{msg} Active Cases #{data}"
+    elsif body.include?("deaths")
+      msg = "#{msg} Deaths #{data}"
+    end
+    response.message do |message|
+      message.body(msg)
+    end
   end
 
-  def check_message_received
-    
+  def validate_message_received
+    text = body
+    if text.match(/(cases|deaths)/)
+      is_valid = true
+    end
+  end
+
+  def backend_payload
+    {
+      country_code: body.split()[1],
+      get_total: body.split()[1] == "total"
+    }
   end
   
 end
