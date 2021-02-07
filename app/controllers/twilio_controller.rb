@@ -10,7 +10,7 @@ class TwilioController < ApplicationController
       message.body('test')
       message.body('yes')
     end
-    response = FetchDataService.call(params)
+    # response = FetchDataService.call(params)
     render xml: response.to_xml
   end
 end
