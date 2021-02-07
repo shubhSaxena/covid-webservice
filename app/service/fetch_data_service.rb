@@ -60,7 +60,7 @@ class FetchDataService < ApplicationService
     puts "body body.match(/(cases|deaths)/) ---- #{body.match(/(cases|deaths)/)}"
     if body.match(/(cases|deaths)/)
       puts "validate_message_received  is_valid b ---- #{is_valid}"
-      is_valid = true
+      @is_valid = true
       puts "validate_message_received  is_valid a ---- #{is_valid}"
     end
   end
