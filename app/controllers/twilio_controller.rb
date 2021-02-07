@@ -4,13 +4,8 @@ class TwilioController < ApplicationController
     puts "*"*80
     puts params
     body = params["Body"].downcase
-    response = Twilio::TwiML::MessagingResponse.new
-    response.message do |message|
-      message.body('Hello World!')
-      message.body('test')
-      message.body('yes')
-    end
-    # response = FetchDataService.call(params)
+    
+    response = FetchDataService.call(params)
     render xml: response.to_xml
   end
 end
