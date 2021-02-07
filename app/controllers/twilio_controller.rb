@@ -8,7 +8,6 @@ class TwilioController < ApplicationController
     response.message do |message|
       message.body('Hello World!')
     end
-    content_type "text/xml"
-    response.to_xml
+    render xml: response.to_xml
   end
 end
