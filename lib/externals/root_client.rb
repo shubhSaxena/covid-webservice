@@ -19,7 +19,7 @@ class RootClient
     opts_payload = {
       headers: @headers,
     }
-    opts_payload.merge!(opts)
+    opts_payload.merge!(body: opts.to_json) if opts
   end
 
   def base_url
