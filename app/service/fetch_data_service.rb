@@ -47,9 +47,9 @@ class FetchDataService < ApplicationService
   def generate_response_msg(data)
     msg = body.split()[1]
     if body.include?("cases")
-      msg = "#{msg} Active Cases #{data}"
+      msg = "#{msg.upcase} Active Cases #{data}"
     elsif body.include?("deaths")
-      msg = "#{msg} Deaths #{data}"
+      msg = "#{msg.upcase} Deaths #{data}"
     end
     response.message do |message|
       message.body(msg)
