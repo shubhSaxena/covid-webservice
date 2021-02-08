@@ -64,8 +64,10 @@ class FetchDataService < ApplicationService
 
   def backend_payload
     {
-      country_code: body.split()[1].upcase,
-      get_total: body.split()[1] == "total"
+      country_stat: {
+        country_code: body.split()[1].upcase,
+        get_total: body.split()[1] == "total"
+      }
     }
   end
   
