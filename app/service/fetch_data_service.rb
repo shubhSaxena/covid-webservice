@@ -16,19 +16,19 @@ class FetchDataService < ApplicationService
   def process
     validate_message_received
     return invalid_response if !is_valid
-    data = fetch_data_from_backend
-    generate_response_msg(data)
+    res = fetch_data_from_backend
+    if res.code != 200
+      error_response
+    else
+      generate_response_msg(res.parsed_response)
+    end
     response
   end
 
   def fetch_data_from_backend
-    puts "*"*80
-    puts " ---fetch_data_from_backend --  "
     if body.include?("cases")
-      puts " ---cases --  backend_payload - #{backend_payload}"
       BackendClient.new.fetch_active_cases_data(backend_payload)
     elsif body.include?("deaths")
-      puts " ---deaths --  backend_payload - #{backend_payload}"
       BackendClient.new.fetch_total_death_data(backend_payload)
     end
   end
@@ -69,6 +69,13 @@ class FetchDataService < ApplicationService
         get_total: body.split()[1] == "total"
       }
     }
+  end
+
+  def error_response
+    response.message do |message|
+      message.body("Error occured.")
+      message.body("Please try again later.")
+    end
   end
   
 end
